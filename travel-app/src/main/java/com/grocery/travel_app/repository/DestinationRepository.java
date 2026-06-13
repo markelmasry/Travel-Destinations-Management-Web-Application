@@ -9,4 +9,5 @@ import org.springframework.data.domain.Pageable;
 @Repository
 public interface DestinationRepository extends JpaRepository<Destination, Long> {
     Page<Destination> findByCountryContainingIgnoreCase(String country, Pageable pageable);
+    boolean existsByCountry(String country);
 }

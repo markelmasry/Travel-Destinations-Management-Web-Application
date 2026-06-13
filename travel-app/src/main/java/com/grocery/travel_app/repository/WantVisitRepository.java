@@ -10,4 +10,8 @@ import java.util.Optional;
 public interface WantVisitRepository extends JpaRepository<WantVisit, Long> {
         List<WantVisit> findByUserId(Long userId);
         Optional<WantVisit> findByUserIdAndDestinationId(Long userId, Long destinationId);
+        void deleteByDestinationId(Long destinationId);
+        boolean existsByDestinationIdAndUserId(Long destinationId, Long userId);
+        void deleteByIdAndUserId(Long id, Long userId);
+        boolean existsByIdAndUserId(Long id, Long userId);
 }

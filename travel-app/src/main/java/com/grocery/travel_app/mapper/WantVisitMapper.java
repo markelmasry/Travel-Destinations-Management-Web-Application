@@ -5,6 +5,9 @@ import com.grocery.travel_app.model.entity.WantVisit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 @RequiredArgsConstructor
 public class WantVisitMapper {
@@ -20,4 +23,13 @@ public class WantVisitMapper {
                 .destination(destinationMapper.toDestinationDto((wantvisit.getDestination())))
                 .build();
     }
+    public List<WantVisitResponse> toWantVisitResponseList(List<WantVisit> wantVisits) {
+        if (wantVisits == null) {
+            return null;
+        }
+        return wantVisits.stream()
+                .map(this::toWantVisitResponse)
+                .collect(Collectors.toList());
+    }
+
 }
