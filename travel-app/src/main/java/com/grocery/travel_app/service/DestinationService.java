@@ -21,12 +21,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class DestinationService {
+
     private final DestinationRepository destinationRepository;
     private final DestinationMapper destinationMapper;
     private final SuggestionsResponseMapper suggestionsResponseMapper;
     private final RestCountriesClient restCountriesClient;
     private final ApplicationEventPublisher eventPublisher;
-
 
     @Transactional(readOnly = true)
     public DestinationDto getDestinationById(Long id) {
@@ -59,13 +59,10 @@ public class DestinationService {
     }
     @Transactional(readOnly = true)
     public SuggestionsResponse fetchSuggestionsFromApi(String countryName) {
-        // 1. Validate Business Rule
         if (countryName == null || countryName.isBlank()) {
             throw new BadRequestException("Search query cannot be empty.");
         }
-        // 2. Fetch Data via Client
         List<DestinationDto> suggestionsList = restCountriesClient.fetchCountriesByName(countryName);
-        // 3. Map and Return Response
         return suggestionsResponseMapper.mapToResponse(suggestionsList);
     }
     @Transactional(readOnly = true)
@@ -82,4 +79,12 @@ public class DestinationService {
                 .map(this::createDestination)
                 .toList();
     }
+    @Transactional(readOnly = true)
+    public List<DestinationDto> getAllDestinations() {
+        return   destinationRepository.findAll()
+                    .stream()
+                    .map(destinationMapper::toDestinationDto)
+                    .toList();
+    }
+
 }

@@ -3,7 +3,6 @@ package com.grocery.travel_app.mapper;
 import com.grocery.travel_app.model.dto.DestinationDto;
 import com.grocery.travel_app.model.dto.SuggestionsResponse;
 import org.springframework.stereotype.Component;
-
 import java.util.List;
 
 @Component

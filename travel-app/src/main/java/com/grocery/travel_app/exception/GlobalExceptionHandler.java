@@ -48,4 +48,24 @@
                     .build();
             return new ResponseEntity<>(error, HttpStatus.BAD_GATEWAY);
         }
+        @ExceptionHandler(InvalidCredentialsException.class)
+        public ResponseEntity<ErrorResponse> handleBadCredentialsException(InvalidCredentialsException ex) {
+            ErrorResponse error = ErrorResponse.builder()
+                    .status(HttpStatus.UNAUTHORIZED.value())
+                    .error("Unauthorized")
+                    .message("Invalid email or password") // Don't tell hackers WHICH one is wrong!
+                    .timestamp(java.time.LocalDateTime.now())
+                    .build();
+            return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+        }
+        @ExceptionHandler(Exception.class)
+        public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
+            ErrorResponse error = ErrorResponse.builder()
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .error("Internal Server Error")
+                    .message(ex.getMessage()) // Or generic "An unexpected error occurred" for production
+                    .timestamp(java.time.LocalDateTime.now())
+                    .build();
+            return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }

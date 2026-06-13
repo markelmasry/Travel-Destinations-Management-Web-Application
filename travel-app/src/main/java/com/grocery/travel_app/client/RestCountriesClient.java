@@ -7,13 +7,13 @@ import com.grocery.travel_app.model.dto.DestinationDto;
 import com.grocery.travel_app.parser.RestCountriesParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,18 +23,23 @@ import java.util.List;
 public class RestCountriesClient {
 
     private final RestTemplate restTemplate;
-    private final ObjectMapper objectMapper; // Spring automatically provides this bean
+    private final ObjectMapper objectMapper;
     private final RestCountriesParser restCountriesParser;
 
+    @Value("${restcountries.api.base-url}")
+    private String baseUrl;
+    @Value("${restcountries.api.key}")
+    private String apiKey;
+
     public List<DestinationDto> fetchCountriesByName(String countryName) {
-        String apiUrl = "https://api.restcountries.com/countries/v5/name?q=" + countryName;
+        String apiUrl = baseUrl + "?q=" + countryName;
         List<DestinationDto> suggestionsList = new ArrayList<>();
 
         try {
             log.info("Client sending request to REST Countries API for: {}", countryName);
 
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", "Bearer rc_live_demo");
+            headers.set("Authorization", "Bearer " + apiKey);
             HttpEntity<String> entity = new HttpEntity<>(headers);
 
             ResponseEntity<String> apiResponse = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class);
