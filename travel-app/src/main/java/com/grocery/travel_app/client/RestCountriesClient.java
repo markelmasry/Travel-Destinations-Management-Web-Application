@@ -46,7 +46,7 @@ public class RestCountriesClient {
             String rawJson = apiResponse.getBody();
 
             JsonNode rootNode = objectMapper.readTree(rawJson);
-            JsonNode dataArray = rootNode.path("data");
+            JsonNode dataArray = rootNode.path("data").path("objects");
 
             if (dataArray.isArray()) {
                 for (JsonNode node : dataArray) {

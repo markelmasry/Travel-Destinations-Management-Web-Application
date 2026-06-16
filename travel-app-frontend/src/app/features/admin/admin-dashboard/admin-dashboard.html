@@ -1,0 +1,99 @@
+<div class="dashboard-wrapper">
+  <header class="top-nav admin-nav">
+    <div class="nav-brand">🛡️ System Administration</div>
+    <div class="header-right">
+      <div class="user-profile">
+        <span>{{ username }}</span>
+        <div class="avatar admin-avatar">{{ username.charAt(0).toUpperCase() }}</div>
+      </div>
+      <button class="btn-logout" (click)="logout()">🚪 Sign Out</button>
+    </div>
+  </header>
+
+  <main class="admin-container">
+    <section class="panel fetch-panel">
+      <h2>Fetch New Destinations</h2>
+      <div class="search-box">
+        <input
+          type="text"
+          [(ngModel)]="adminSearchCountry"
+          (keyup.enter)="fetchAdminSuggestion()"
+          placeholder="Enter country name (e.g., Egypt)"
+        />
+        <button class="btn-primary" (click)="fetchAdminSuggestion()">Search API</button>
+      </div>
+
+      @if (statusMessage) {
+        <p class="status-msg">{{ statusMessage }}</p>
+      }
+
+      @if (suggestedDestinations.length > 0) {
+        <div class="bulk-header">
+          <p>Review {{ suggestedDestinations.length }} suggestions:</p>
+          <button class="btn-bulk" (click)="bulkAddAll()">📥 Bulk Save All</button>
+        </div>
+
+        <div class="suggestions-list">
+          @for (dest of suggestedDestinations; track dest.country) {
+            <div class="preview-card">
+              <div class="preview-content">
+                <img [src]="dest.flagImageUrl" alt="Flag">
+                <div class="info">
+                  <h4>{{ dest.country }}</h4>
+                  <p>{{ dest.capital }} | Pop: {{ dest.population }}</p>
+                </div>
+              </div>
+              <button class="btn-approve" (click)="addSingleToDb(dest)">Approve</button>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <section class="panel db-panel">
+      <h2>Manage System Destinations</h2>
+      <p class="subtitle">Total destinations in database: {{ totalElements }}</p>
+
+      <div class="db-grid">
+        @for (saved of savedDestinations; track saved.id) {
+          <div class="db-card">
+            <img [src]="saved.flagImageUrl" alt="Flag">
+            <div class="card-info">
+              <h4>{{ saved.country }}</h4>
+              <p>{{ saved.capital }}</p>
+            </div>
+            <button class="btn-delete" (click)="deleteDestination(saved.id)">🗑️ Remove</button>
+          </div>
+        }
+
+        @if (savedDestinations.length === 0) {
+          <div class="empty-db">
+            <p>Database is empty. Fetch some destinations to get started!</p>
+          </div>
+        }
+      </div>
+
+      @if (totalPages > 1) {
+        <div class="admin-pagination-bar">
+          <button
+            class="btn-page"
+            (click)="prevPage()"
+            [disabled]="currentPage === 0">
+            ⬅️ Previous
+          </button>
+
+          <span class="page-info">
+            Page <strong>{{ currentPage + 1 }}</strong> of <strong>{{ totalPages }}</strong>
+          </span>
+
+          <button
+            class="btn-page"
+            (click)="nextPage()"
+            [disabled]="currentPage === totalPages - 1">
+            Next ➡️
+          </button>
+        </div>
+      }
+    </section>
+  </main>
+</div>

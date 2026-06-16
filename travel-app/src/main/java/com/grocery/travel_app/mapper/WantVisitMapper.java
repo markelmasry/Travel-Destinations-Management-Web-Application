@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class WantVisitMapper {
-    // Injecting the specific mappers we need!
+
     private final UserMapper userMapper;
     private final DestinationMapper destinationMapper;
 

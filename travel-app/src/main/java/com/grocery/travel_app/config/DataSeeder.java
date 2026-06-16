@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import com.grocery.travel_app.repository.UserRepository;
 import com.grocery.travel_app.model.entity.User;
 import java.util.List;
-
 import static com.grocery.travel_app.model.entity.Role.ROLE_ADMIN;
 import static com.grocery.travel_app.model.entity.Role.ROLE_USER;
 

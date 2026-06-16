@@ -9,10 +9,7 @@ import java.util.List;
 public class SuggestionsResponseMapper {
 
     public SuggestionsResponse mapToResponse(List<DestinationDto> suggestionsList) {
-        String message = suggestionsList.isEmpty()
-                ? "No matches found."
-                : "Successfully fetched suggestions from REST Countries API";
-
+        String message = suggestionsList.isEmpty() ? "No matches found." : "Successfully fetched suggestions from REST Countries API";
         return SuggestionsResponse.builder()
                 .suggestions(suggestionsList)
                 .totalResults(String.valueOf(suggestionsList.size()))

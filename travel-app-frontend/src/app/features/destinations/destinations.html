@@ -1,0 +1,33 @@
+<div class="destinations-container">
+  <h1>🌍 Where to Next?</h1>
+  <h2>Explore Destinations</h2>
+
+  <div class="search-box">
+    <input
+      type="text"
+      [(ngModel)]="searchCountry"
+      placeholder="Search by country..."
+    />
+    <button (click)="onSearch()">Search</button>
+  </div>
+
+  <hr />
+
+  <div class="destinations-grid" *ngIf="destinations.length > 0; else noData">
+    <div class="destination-card" *ngFor="let dest of destinations">
+
+      <img *ngIf="dest.flagImageUrl" [src]="dest.flagImageUrl" alt="Flag of {{ dest.country }}" class="flag-img" />
+
+      <h3>{{ dest.country }}</h3>
+      <p class="capital">🏛️ <strong>Capital:</strong> {{ dest.capital }}</p>
+      <p class="details">🗺️ <strong>Region:</strong> {{ dest.region }}</p>
+      <p class="details">👥 <strong>Population:</strong> {{ dest.population | number }}</p>
+      <p class="details">💵 <strong>Currency:</strong> {{ dest.currency }}</p>
+
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <p class="error-msg">No destinations found matching your criteria.</p>
+  </ng-template>
+</div>

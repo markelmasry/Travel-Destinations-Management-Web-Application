@@ -1,0 +1,25 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="brand-header">
+      <span class="logo-icon">✈️</span>
+      <h2>Smart Travel</h2>
+      <p>Sign in to explore the world</p>
+    </div>
+
+    <form class="login-form" (ngSubmit)="login()">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username" placeholder="Enter your username" required>
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" placeholder="Enter your password" required>
+      </div>
+
+      <p class="error-msg" *ngIf="errorMessage">{{ errorMessage }}</p>
+
+      <button type="submit" class="btn-primary">Sign In</button>
+    </form>
+  </div>
+</div>

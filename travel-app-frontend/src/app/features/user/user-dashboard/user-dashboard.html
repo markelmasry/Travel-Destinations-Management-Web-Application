@@ -1,0 +1,102 @@
+<div class="dashboard-wrapper">
+  <header class="top-nav">
+    <div class="nav-brand">🌍 Smart Travel</div>
+
+    <div class="header-right">
+      <div class="user-profile">
+        <div class="avatar">{{ username.charAt(0).toUpperCase() }}</div>
+        <span>{{ username }}</span>
+      </div>
+      <button class="btn-logout" (click)="logout()">🚪 Sign Out</button>
+    </div>
+  </header>
+
+  <main class="content-container">
+    <div class="hero-section">
+      <h1>Where do you want to go?</h1>
+      <div class="search-bar">
+        <span class="search-icon">🔍</span>
+        <input
+          [ngModel]="searchQuery"
+          (ngModelChange)="onSearchChange($event)"
+          placeholder="Search destinations by country or capital...">
+      </div>
+    </div>
+
+    <div class="view-toggles">
+      <button
+        class="toggle-btn"
+        [class.active]="viewMode === 'all'"
+        (click)="setViewMode('all')">
+        🌍 Explore All
+      </button>
+      <button
+        class="toggle-btn"
+        [class.active]="viewMode === 'saved'"
+        (click)="setViewMode('saved')">
+        ⭐ My Saved List
+      </button>
+    </div>
+
+    <div class="grid-container">
+      @for (dest of displayedDestinations; track dest.id) {
+        <div class="dest-card">
+          <div class="img-wrapper">
+            <img [src]="dest.flagImageUrl || 'assets/placeholder.jpg'" alt="{{ dest.country }} flag">
+            <span class="region-badge">{{ dest.region }}</span>
+          </div>
+
+          <div class="card-body">
+            <h3>{{ dest.country }}, {{ dest.capital }}</h3>
+            <div class="details">
+              <p><span>👥</span> {{ dest.population | number }} pop.</p>
+              <p><span>💵</span> {{ dest.currency }}</p>
+            </div>
+          </div>
+
+          <div class="card-footer">
+            <button
+              class="btn-visit"
+              [class.saved]="isVisited(dest.id)"
+              [disabled]="isProcessingVisit"
+              (click)="toggleVisit(dest)">
+              {{ isVisited(dest.id) ? '⭐ Saved to Visit' : '🤍 Want to Visit' }}
+            </button>
+          </div>
+        </div>
+      }
+
+      @if (displayedDestinations.length === 0) {
+        <div class="empty-state">
+          <span class="empty-icon">🏜️</span>
+          <h2>Nothing to see here</h2>
+          <p>{{ viewMode === 'saved' ? 'You haven\'t saved any destinations to your list yet. Start exploring!' : 'No destinations found matching your search criteria.' }}</p>
+        </div>
+      }
+    </div>
+
+    @if ((viewMode === 'all' && totalPages > 1) || (viewMode === 'saved' && getTotalSavedPages > 1)) {
+      <div class="pagination-bar">
+        <button
+          class="btn-page"
+          (click)="prevPage()"
+          [disabled]="viewMode === 'all' ? currentPage === 0 : currentSavedPage === 0">
+          ⬅️ Previous
+        </button>
+
+        <span class="page-info">
+          Page <strong>{{ viewMode === 'all' ? currentPage + 1 : currentSavedPage + 1 }}</strong>
+          of
+          <strong>{{ viewMode === 'all' ? totalPages : getTotalSavedPages }}</strong>
+        </span>
+
+        <button
+          class="btn-page"
+          (click)="nextPage()"
+          [disabled]="viewMode === 'all' ? currentPage === totalPages - 1 : currentSavedPage === getTotalSavedPages - 1">
+          Next ➡️
+        </button>
+      </div>
+    }
+  </main>
+</div>
