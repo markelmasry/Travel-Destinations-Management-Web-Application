@@ -24,7 +24,7 @@ The application enables regular users to securely browse curated global destinat
 
   The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `WantVisit` relational mappings).
 
-![ERD Diagram](images/erd.png)
+![ERD Diagram](./Images/erd.png)
 
 ### Project Architecture
 
@@ -167,19 +167,19 @@ Install dependencies and launch the live development interface:
 # Preview
 
 - **Login Layout**
-![Login Layout](images/Login.png)
+![Login Layout](./Images/Login.png)
 - **Admin Dashboard Layout**
-![Admin Dashboard Layout](images/Admin.png)
-![Admin Dashboard Layout](images/FetchApi.png)
-![Admin Dashboard Layout](images/AddDestinations.png)
+![Admin Dashboard Layout](./Images/Admin.png)
+![Admin Dashboard Layout](./Images/FetchApi.png)
+![Admin Dashboard Layout](./Images/AddDestinations.png)
 - **User Dashboard & Paginated Grid Views**
-![User Dashboard Layout](images/User.png)
-![User Dashboard Layout](images/SaveToList.png)
-![User Dashboard Layout](images/pages.png)
+![User Dashboard Layout](./Images/User.png)
+![User Dashboard Layout](./Images/SaveToList.png)
+![User Dashboard Layout](./Images/pages.png)
 - **Reactive Debounced Search Execution**
-![Search Execution Layout](images/Searching.png)
+![Search Execution Layout](./Images/Searching.png)
 - **Wishlist Toggle Interactions**
-![VisitList Layout](images/WantToVisitList.png)
+![VisitList Layout](./Images/WantToVisitList.png)
 
 ---
 
