@@ -54,7 +54,6 @@ public class WantVisitService {
         wantVisitRepository.deleteByIdAndUserId(wantVisitId, userId);
     }
     @Transactional
-    @EventListener
     public void deleteByDestinationId(Long destinationId) {
         wantVisitRepository.deleteByDestinationId(destinationId);
     }

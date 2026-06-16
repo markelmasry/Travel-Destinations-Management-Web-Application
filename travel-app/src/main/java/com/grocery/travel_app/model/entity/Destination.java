@@ -3,6 +3,8 @@ package com.grocery.travel_app.model.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Table(name = "destinations")
 @Getter
@@ -22,4 +24,6 @@ public class Destination {
     private String currency;
     @Column(name = "flag_image_url",nullable = false)
     private String flagImageUrl;
+    @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WantVisit> wantVisits;
 }

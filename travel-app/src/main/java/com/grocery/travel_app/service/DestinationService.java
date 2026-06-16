@@ -11,7 +11,6 @@ import com.grocery.travel_app.model.dto.DestinationDto;
 import com.grocery.travel_app.model.entity.Destination;
 import com.grocery.travel_app.repository.DestinationRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,8 +25,6 @@ public class DestinationService {
     private final DestinationMapper destinationMapper;
     private final SuggestionsResponseMapper suggestionsResponseMapper;
     private final RestCountriesClient restCountriesClient;
-    private final ApplicationEventPublisher eventPublisher;
-
     @Transactional(readOnly = true)
     public DestinationDto getDestinationById(Long id) {
          return destinationRepository.findById(id)
@@ -49,7 +46,6 @@ public class DestinationService {
         if(!destinationRepository.existsById(id)){
             throw new ResourceNotFoundException("Destination not found with id: " + id);
         }
-        eventPublisher.publishEvent(id);
         destinationRepository.deleteById(id);
     }
     @Transactional(readOnly = true)
