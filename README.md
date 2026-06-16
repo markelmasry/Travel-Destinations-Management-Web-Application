@@ -74,7 +74,7 @@ The project follows a well-structured architectural pattern:
 ```bash
     git clone https://github.com/markelmasry/Travel-Destinations-Management-Web-Application.git
     cd travel-app
-    ```
+   ```
 
 2. Configure the MySQL database:
 
@@ -82,7 +82,7 @@ The project follows a well-structured architectural pattern:
 
 ```sql
     CREATE DATABASE travel_db;
-    ```
+   ```
 
    Update the `src/main/resources/application.properties` file configuration to match your local runtime environments:
 
@@ -91,19 +91,19 @@ The project follows a well-structured architectural pattern:
     spring.datasource.username=your_mysql_username
     spring.datasource.password=your_mysql_password
     spring.jpa.hibernate.ddl-auto=update
-    ```
+   ```
 
 3. Install dependencies and build target files:
 
 ```bash
     mvn clean install
-    ```
+   ```
 
 4. Boot up the Spring application backend:
 
 ```bash
     mvn spring-boot:run
-    ```
+   ```
    *The server container will spin up successfully on `http://localhost:8080`.*
 
 #### For Angular (Frontend)
@@ -113,7 +113,7 @@ Install dependencies and launch the live development interface:
     cd ../travel-app-frontend
     npm install
     ng serve --open
-    ```
+   ```
    *The client-side compilation layers will automatically initialize and open on `http://localhost:4200`.*
 
 ---
