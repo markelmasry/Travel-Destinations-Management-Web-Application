@@ -24,7 +24,7 @@ The application enables regular users to securely browse curated global destinat
 
   The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `WantVisit` relational mappings).
 
-![ERD Diagram](Images/erd.png)
+![ERD Diagram](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/ERD.png)
 
 ### Project Architecture
 
@@ -167,19 +167,19 @@ Install dependencies and launch the live development interface:
 # Preview
 
 - **Login Layout**
-![Login Layout](./Images/Login.png)
+![Login Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/Login.png)
 - **Admin Dashboard Layout**
-![Admin Dashboard Layout](./Images/Admin.png)
-![Admin Dashboard Layout](./Images/FetchApi.png)
-![Admin Dashboard Layout](./Images/AddDestinations.png)
+![Admin Dashboard Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/Admin.png)
+![Admin Dashboard Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/FetchApi.png)
+![Admin Dashboard Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/AddDestinations.png)
 - **User Dashboard & Paginated Grid Views**
-![User Dashboard Layout](./Images/User.png)
-![User Dashboard Layout](./Images/SaveToList.png)
-![User Dashboard Layout](./Images/pages.png)
+![User Dashboard Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/User.png)
+![User Dashboard Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/SaveToList.png)
+![User Dashboard Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/pages.png)
 - **Reactive Debounced Search Execution**
-![Search Execution Layout](./Images/Searching.png)
+![Search Execution Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/Searching.png)
 - **Wishlist Toggle Interactions**
-![VisitList Layout](./Images/WantToVisitList.png)
+![VisitList Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/WantToVisitList.png)
 
 ---
 
