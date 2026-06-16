@@ -24,7 +24,7 @@ The application enables regular users to securely browse curated global destinat
 
   The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `WantVisit` relational mappings).
 
-![ERD Diagram](./Images/erd.png)
+![ERD Diagram](Images/erd.png)
 
 ### Project Architecture
 
