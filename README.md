@@ -117,7 +117,6 @@ restcountries.api.key=${REST_COUNTRIES_API_KEY}
 ```text
 JWT_SECRET=your_jwt_secret
 REST_COUNTRIES_API_KEY=your_api_key
-Save the application.
 ```
 4. Save the configuration and run the application.
 
