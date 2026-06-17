@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthRequest {
-    private String username;
-    private String password;
+public class WishlistItemResponseDto {
+    private  Long id;
+    private UserResponseDto user;
+    private DestinationDto destination;
 }

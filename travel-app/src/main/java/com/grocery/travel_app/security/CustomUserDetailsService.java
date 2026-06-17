@@ -1,5 +1,6 @@
 package com.grocery.travel_app.security;
 
+import com.grocery.travel_app.model.entity.User;
 import com.grocery.travel_app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.grocery.travel_app.model.entity.User user = userRepository.findByUsername(username)
+        User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
         String roleName = user.getRole().name().replace("ROLE_", "");
 

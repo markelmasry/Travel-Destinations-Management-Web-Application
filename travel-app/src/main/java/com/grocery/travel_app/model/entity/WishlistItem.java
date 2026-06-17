@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "want_visits")
+@Table(name = "wishlist_items")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class WantVisit {
+public class WishlistItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

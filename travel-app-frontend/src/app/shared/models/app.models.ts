@@ -1,7 +1,11 @@
-export interface AuthResponse {
+export interface AuthResponseDto {
   token: string;
   message?: string;
-  user: UserResponse;
+}
+
+export interface AuthRequestDto {
+  username: string;
+  password: string;
 }
 export type Role = 'ROLE_USER' | 'ROLE_ADMIN';
 
@@ -11,7 +15,7 @@ export interface UserResponse {
   role?: Role;
 }
 
-export interface WantVisitResponse {
+export interface WishlistItemResponseDto {
   id: number;
   user: UserResponse;
   destination: DestinationDto;

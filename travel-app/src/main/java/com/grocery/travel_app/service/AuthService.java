@@ -2,18 +2,19 @@ package com.grocery.travel_app.service;
 
 import com.grocery.travel_app.exception.DuplicateResourceException;
 import com.grocery.travel_app.exception.InvalidCredentialsException;
-import com.grocery.travel_app.mapper.UserMapper;
-import com.grocery.travel_app.model.dto.AuthResponse;
-import com.grocery.travel_app.model.dto.UserResponse;
+import com.grocery.travel_app.model.dto.AuthRequestDto;
+import com.grocery.travel_app.model.dto.AuthResponseDto;
 import com.grocery.travel_app.model.entity.Role;
 import com.grocery.travel_app.model.entity.User;
 import com.grocery.travel_app.repository.UserRepository;
 import com.grocery.travel_app.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -21,61 +22,75 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-    private final UserMapper userMapper;
 
     @Transactional
-    public AuthResponse registerAdmin(String username, String password) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new DuplicateResourceException("Username already exists");
+    public AuthResponseDto registerAdmin(AuthRequestDto request) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            log.warn("Failed admin registration: Username '{}' already exists", request.getUsername());
+            throw new DuplicateResourceException("Registration failed. Please try a different username.");
         }
 
         User admin = User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_ADMIN)
                 .build();
 
         userRepository.save(admin);
-        return new AuthResponse("","Admin registered successfully",userMapper.toUserResponse(admin));
+        log.info("Successfully registered new admin: {}", admin.getUsername());
+
+        return AuthResponseDto.builder()
+                .message("Admin registered successfully")
+                .build();
     }
+
     @Transactional
-    public AuthResponse registerUser(String username, String password) {
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new DuplicateResourceException("Username already exists");
+    public AuthResponseDto registerUser(AuthRequestDto request) {
+        if (userRepository.findByUsername(request.getUsername()).isPresent()) {
+            log.warn("Failed user registration: Username '{}' already exists", request.getUsername());
+            throw new DuplicateResourceException("Registration failed. Please try a different username.");
         }
 
         User user = User.builder()
-                .username(username)
-                .password(passwordEncoder.encode(password))
+                .username(request.getUsername())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.ROLE_USER)
                 .build();
 
         userRepository.save(user);
-        return new AuthResponse("","User registered successfully",userMapper.toUserResponse(user));
+        log.info("Successfully registered new user: {}", user.getUsername());
+
+        return AuthResponseDto.builder()
+                .message("User registered successfully")
+                .build();
     }
+
     @Transactional(readOnly = true)
-    public AuthResponse login(String username, String password) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
-        if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new InvalidCredentialsException("Invalid email or password");
+    public AuthResponseDto login(AuthRequestDto request) {
+        User user = userRepository.findByUsername(request.getUsername())
+                .orElseThrow(() -> {
+                    log.warn("Login failed: User '{}' not found in database", request.getUsername());
+                    return new InvalidCredentialsException("Invalid username or password");
+                });
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            log.warn("Login failed: Incorrect password attempt for user '{}'", request.getUsername());
+            throw new InvalidCredentialsException("Invalid username or password");
         }
+
         org.springframework.security.core.userdetails.UserDetails springUser =
                 org.springframework.security.core.userdetails.User.builder()
                         .username(user.getUsername())
                         .password(user.getPassword())
                         .authorities(user.getRole().name())
                         .build();
+
         String token = jwtService.generateToken(springUser);
-        UserResponse userResponse = UserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .role(user.getRole())
-                .build();
-        return AuthResponse.builder()
+        log.info("User '{}' successfully logged in", user.getUsername());
+
+        return AuthResponseDto.builder()
                 .token(token)
                 .message("Login successful")
-                .user(userResponse)
                 .build();
     }
 }

@@ -3,7 +3,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthResponse, UserResponse, Role } from '../../../shared/models/app.models';
+import { AuthResponseDto } from '../../../shared/models/app.models';
 
 @Component({
   selector: 'app-login',
@@ -26,59 +26,52 @@ export class LoginComponent {
 
   login() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('jwt_token');
-      localStorage.removeItem('current_user');
+      localStorage.clear();
     }
 
-    const credentials = { username: this.username, password: this.password };
+    const credentials = {
+      username: this.username,
+      password: this.password
+    };
 
-    this.http.post<AuthResponse>('http://localhost:8080/api/auth/login', credentials).subscribe({
+    this.http.post<AuthResponseDto>('http://localhost:8080/api/auth/login', credentials).subscribe({
       next: (response) => {
-        if (isPlatformBrowser(this.platformId)) {
+        if (isPlatformBrowser(this.platformId) && response.token) {
+          localStorage.setItem('jwt_token', response.token);
 
-          if (response.token) {
-            localStorage.setItem('jwt_token', response.token);
-          }
+          // Decode the payload from the middle segment of the JWT token
+          try {
+            const payloadBase64 = response.token.split('.')[1];
+            const payloadJson = atob(payloadBase64);
+            const parsedToken = JSON.parse(payloadJson);
 
-          let resolvedRole: Role | undefined;
-          let userPayload: UserResponse | null = null;
-
-          if ('user' in response && response['user']) {
-            const nestedUser = response['user'] as UserResponse;
-            resolvedRole = nestedUser.role;
-            userPayload = nestedUser;
-          }
-          else if ('role' in response) {
-            const flatResponse = response as any;
-            resolvedRole = flatResponse.role;
-            userPayload = {
-              id: flatResponse.id,
-              username: flatResponse.username,
-              role: flatResponse.role
+            // Match these property names to whatever claims you added in Java's JwtService!
+            const userPayload = {
+              id: parsedToken.userId || parsedToken.id, // Ensure your JwtService includes this claim
+              username: parsedToken.sub,
+              role: parsedToken.roles ? parsedToken.roles[0] : ''
             };
-          }
 
-          if (userPayload && resolvedRole) {
             localStorage.setItem('current_user', JSON.stringify(userPayload));
-            this.cdr.detectChanges();
 
-            if (resolvedRole === 'ROLE_ADMIN') {
+            if (userPayload.role === 'ROLE_ADMIN') {
               this.router.navigate(['/admin-dashboard']);
             } else {
               this.router.navigate(['/user-dashboard']);
             }
-          } else {
-            console.error('Authentication response structural mismatch: Could not resolve user roles.');
-            this.errorMessage = 'An internal application layout mismatch occurred.';
-            this.cdr.detectChanges();
+          } catch (e) {
+            console.error('Failed to parse user claims from JWT token token:', e);
           }
         }
-      },
-      error: (err) => {
-        console.error('Authentication request rejected:', err);
-        this.errorMessage = 'Invalid credentials. Please try again.';
-        this.cdr.detectChanges();
       }
     });
+  }
+  private getRoleFromToken(token: string): string {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.roles[0];
+    } catch (e) {
+      return '';
+    }
   }
 }

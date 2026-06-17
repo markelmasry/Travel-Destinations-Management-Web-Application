@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 
-import { WantVisitService } from './want-visit';
+import { WantVisitService } from './wishlist.service';
 
-describe('WantVisit', () => {
+describe('WishlistItem', () => {
   let service: WantVisitService;
 
   beforeEach(() => {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { AuthResponse } from '../../shared/models/app.models';
+import { AuthResponseDto } from '../../shared/models/app.models';
 import { tap } from 'rxjs/operators';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(credentials: any) {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<AuthResponseDto>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
         if (response.token) {
           localStorage.setItem('token', response.token);
@@ -23,7 +23,7 @@ export class AuthService {
   }
 
   registerUser(credentials: any) {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/register-user`, credentials);
+    return this.http.post<AuthResponseDto>(`${this.apiUrl}/register-user`, credentials);
   }
 
   logout() {

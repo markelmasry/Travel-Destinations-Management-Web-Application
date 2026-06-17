@@ -1,17 +1,17 @@
 package com.grocery.travel_app.model.dto;
 
+import com.grocery.travel_app.model.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import java.util.List;
 
-@Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SuggestionsResponse {
-    private List<DestinationDto> suggestions;
-    private String totalResults;
-    private String response;
+@Data
+@Builder
+public class UserResponseDto {
+    private Long id;
+    private String username;
+    private Role role;
 }

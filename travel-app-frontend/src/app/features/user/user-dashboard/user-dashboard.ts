@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
 import { DestinationService } from '../../../core/services/destination';
-import { WantVisitService } from '../../../core/services/want-visit';
-import { DestinationDto, WantVisitResponse, Page } from '../../../shared/models/app.models';
+import { WishlistService } from '../../../core/services/wishlist.service';
+import { DestinationDto, WishlistItemResponseDto, Page } from '../../../shared/models/app.models';
 
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
@@ -19,7 +19,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 export class UserDashboardComponent implements OnInit, OnDestroy {
   username: string = 'Explorer';
-  userId!: number;
 
   allDestinations: DestinationDto[] = [];
   savedDestinations: DestinationDto[] = [];
@@ -40,7 +39,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private destinationService: DestinationService,
-    private wantVisitService: WantVisitService,
+    private wishlistService: WishlistService,
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object,
     private cdr: ChangeDetectorRef
@@ -50,8 +49,8 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     if (isPlatformBrowser(this.platformId)) {
       this.extractUserInfo();
 
-      if (this.userId) {
-        this.loadUserVisitList();
+      if (this.username && this.username !== 'Explorer') {
+        this.loadUserWishlist();
       }
       this.loadDestinations();
 
@@ -77,7 +76,6 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
       const userStr = localStorage.getItem('current_user');
       if (userStr) {
         const user = JSON.parse(userStr);
-        this.userId = user.id;
         this.username = user.username || this.username;
       }
     }
@@ -101,9 +99,9 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
     });
   }
 
-  loadUserVisitList() {
-    this.wantVisitService.getUserVisitList(this.userId).subscribe({
-      next: (visits: WantVisitResponse[]) => {
+  loadUserWishlist() {
+    this.wishlistService.getUserWishlist(this.username).subscribe({
+      next: (visits: WishlistItemResponseDto[]) => {
         this.savedVisitsMap.clear();
         this.savedDestinations = [];
 
@@ -117,33 +115,28 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         this.updateDisplay();
         this.cdr.detectChanges();
       },
-      error: (err: any) => console.error('Failed to load visit list', err)
+      error: (err: any) => console.error('Failed to load wishlist items', err)
     });
   }
 
   toggleVisit(dest: DestinationDto) {
-    if (this.isProcessingVisit || !this.userId || !dest.id) return;
+    if (this.isProcessingVisit || !dest.id || !this.username) return;
 
     this.isProcessingVisit = true;
 
     if (this.isVisited(dest.id)) {
-      const visitId = this.savedVisitsMap.get(dest.id);
-      if (visitId) {
-        this.wantVisitService.removeFromVisitList(visitId, this.userId).subscribe({
+      const wishlistId = this.savedVisitsMap.get(dest.id);
+      if (wishlistId) {
+        this.wishlistService.removeFromWishlist(wishlistId, this.username).subscribe({
           next: () => {
-            this.savedVisitsMap.delete(dest.id as number);
+            this.savedVisitsMap.delete(dest.id!);
             this.savedDestinations = this.savedDestinations.filter(d => d.id !== dest.id);
-
-            if (this.viewMode === 'saved' && this.currentSavedPage > 0 && this.currentSavedPage * this.pageSize >= this.savedDestinations.length) {
-              this.currentSavedPage--;
-            }
-
             this.updateDisplay();
             this.isProcessingVisit = false;
             this.cdr.detectChanges();
           },
           error: (err: any) => {
-            console.error('Failed to remove from list', err);
+            console.error('Failed to remove from wishlist:', err);
             this.isProcessingVisit = false;
           }
         });
@@ -151,24 +144,16 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
         this.isProcessingVisit = false;
       }
     } else {
-      this.wantVisitService.addToVisitList(dest.id, this.userId).subscribe({
-        next: (response: WantVisitResponse) => {
-          if (response.destination && response.destination.id) {
-            this.savedVisitsMap.set(response.destination.id, response.id);
-            if (!this.savedDestinations.some(d => d.id === response.destination.id)) {
-              this.savedDestinations.push(response.destination);
-            }
-          }
+      this.wishlistService.addToWishlist(dest.id, this.username).subscribe({
+        next: (response: WishlistItemResponseDto) => {
+          this.savedVisitsMap.set(dest.id!, response.id);
+          this.savedDestinations.push(dest);
           this.updateDisplay();
           this.isProcessingVisit = false;
           this.cdr.detectChanges();
         },
         error: (err: any) => {
-          if (err.status === 409) {
-            this.loadUserVisitList();
-          } else {
-            console.error('Failed to add to list', err);
-          }
+          console.error('Failed to add to wishlist:', err);
           this.isProcessingVisit = false;
         }
       });
@@ -231,8 +216,7 @@ export class UserDashboardComponent implements OnInit, OnDestroy {
 
   logout() {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem('jwt_token');
-      localStorage.removeItem('current_user');
+      localStorage.clear();
     }
     this.router.navigate(['/login']);
   }

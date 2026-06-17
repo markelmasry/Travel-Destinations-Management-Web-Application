@@ -25,5 +25,5 @@ public class Destination {
     @Column(name = "flag_image_url",nullable = false)
     private String flagImageUrl;
     @OneToMany(mappedBy = "destination", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WantVisit> wantVisits;
+    private List<WishlistItem> wishlistItems;
 }
