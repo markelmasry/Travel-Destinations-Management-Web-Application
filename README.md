@@ -209,7 +209,7 @@ Install dependencies and launch the live development interface:
 - **Reactive Debounced Search Execution**
 ![Search Execution Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/Searching.png)
 - **Wishlist Toggle Interactions**
-![wishlist Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/WantToVisitList.png)
+![wishlist Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/wishlist.png)
 
 ---
 
