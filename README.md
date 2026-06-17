@@ -22,7 +22,7 @@ The application enables regular users to securely browse curated global destinat
 
 ### Database Design
 
-  The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `WantVisit` relational mappings).
+  The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `Wishlist` relational mappings).
 
 ![ERD Diagram](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/ERD.png)
 
@@ -153,7 +153,7 @@ Install dependencies and launch the live development interface:
 <details>
 <summary>Auth Controller</summary>
 
-### 1. `POST /api/v1/auth/login`
+### 1. `POST /api/auth/login`
 - **Description**: Validates user credentials, roles, and provides an active stateless JWT authorization token.
 
 </details>
@@ -161,33 +161,33 @@ Install dependencies and launch the live development interface:
 <details>
 <summary>Destination Controller</summary>
 
-### 1. `GET /api/v1/admin/destinations/search`
+### 1. `GET /api/destinations/search`
 - **Description**: Returns server-side paginated local database records matching optional country queries.
 
-### 2. `GET /api/v1/admin/destinations/suggestions`
+### 2. `GET /api/destinations/suggestions`
 - **Description**: Reaches out to the external third-party travel API to fetch recommended data profiles based on a country keyword.
 
-### 3. `POST /api/v1/admin/destinations`
+### 3. `POST /api/destinations`
 - **Description**: Persists a single verified travel destination record configuration to the relational database.
 
-### 4. `POST /api/v1/admin/destinations/bulk`
+### 4. `POST /api/destinations/bulk`
 - **Description**: Executes a transactional batch insert to persist multiple suggestions concurrently (Bonus Feature).
 
-### 5. `DELETE /api/v1/admin/destinations/{id}`
+### 5. `DELETE /api/destinations/{id}`
 - **Description**: Permanently removes an approved destination configuration profile out of the database via its numerical unique ID.
 
 </details>
 
 <details>
-<summary>WantVisit Controller</summary>
+<summary>Wishlist Controller</summary>
 
-### 1. `GET /api/v1/user/visit-list/{userId}`
-- **Description**: Retrieves all saved wishlist items currently bookmarked by a specific user profile tracking ID.
+### 1. `GET /api/wishlist/user/{username}`
+- **Description**: Retrieves all saved wishlist items currently bookmarked by a specific user profile.
 
-### 2. `POST /api/v1/user/visit-list`
+### 2. `POST /api/wishlist`
 - **Description**: Saves a relational tracking bookmark linking a user profile directly to an approved destination ID.
 
-### 3. `DELETE /api/v1/user/visit-list/{visitId}/user/{userId}`
+### 3. `DELETE /api/wishlist/{visitId}/user/{username}`
 - **Description**: Removes an existing bookmarked tracking instance safely out of a user's personal tracking list.
 
 </details>
