@@ -92,6 +92,37 @@ The project follows a well-structured architectural pattern:
     spring.datasource.password=your_mysql_password
     spring.jpa.hibernate.ddl-auto=update
    ```
+### Environment Variables
+
+Before running the Spring Boot application, configure the following environment variables in your IDE or operating system:
+
+| Variable | Description |
+|-----------|-------------|
+| JWT_SECRET | Secret key used for JWT authentication |
+| REST_COUNTRIES_API_KEY | API key used for the REST Countries service |
+
+These variables are referenced in `application.properties`:
+
+```properties
+application.security.jwt.secret-key=${JWT_SECRET}
+restcountries.api.key=${REST_COUNTRIES_API_KEY}
+```
+
+#### IntelliJ IDEA Setup
+
+1. Open **Run → Edit Configurations**.
+2. Select your Spring Boot application.
+3. Add the following environment variables:
+
+```text
+JWT_SECRET=your_jwt_secret
+REST_COUNTRIES_API_KEY=your_api_key
+Save the application.
+```
+4. Save the configuration and run the application.
+
+> **Note:** Sensitive values such as JWT secrets and API keys are not included in the repository and must be configured locally before running the application.
+
 
 3. Install dependencies and build target files:
 
