@@ -129,7 +129,7 @@ Install dependencies and launch the live development interface:
 </details>
 
 <details>
-<summary>Admin Controller</summary>
+<summary>Destination Controller</summary>
 
 ### 1. `GET /api/v1/admin/destinations/search`
 - **Description**: Returns server-side paginated local database records matching optional country queries.
@@ -149,7 +149,7 @@ Install dependencies and launch the live development interface:
 </details>
 
 <details>
-<summary>User Controller</summary>
+<summary>WantVisit Controller</summary>
 
 ### 1. `GET /api/v1/user/visit-list/{userId}`
 - **Description**: Retrieves all saved wishlist items currently bookmarked by a specific user profile tracking ID.
