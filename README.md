@@ -4,7 +4,7 @@
 
 This project is a fully-functional full-stack application developed using **Spring Boot 3+**, **Java 17**, **Hibernate**, **MySQL**, and **Angular 16+**. Developed as the technical selection task for the Associate Software Engineer position, the application implements the required travel domain architecture. 
 
-The application enables regular users to securely browse curated global destinations, perform live reactive searches, view comprehensive geographic/monetary metadata, and manage a custom "Want to Visit" wishlist. Concurrently, it grants administrative access to an Admin Dashboard where recruiters or admins can live-fetch external recommendations from a third-party countries API, review them, and perform individual or transactional transactional bulk-saves into the local relational database.
+The application enables regular users to securely browse curated global destinations, perform live reactive searches, view comprehensive geographic/monetary metadata, and manage a custom "WishList". Concurrently, it grants administrative access to an Admin Dashboard where recruiters or admins can live-fetch external recommendations from a third-party countries API, review them, and perform individual or transactional transactional bulk-saves into the local relational database.
 
 ---
 
@@ -14,7 +14,7 @@ The application enables regular users to securely browse curated global destinat
 - **Admin Dashboard**: Admins can view all internally approved configurations, pull real-time live country data suggestions directly from the external REST Countries API, execute clean single inserts, run transactional batch bulk-inserts, or cleanly remove destinations from the local persistent storage layer.
 - **Pagination for the Destinations List**: Regular users can effortlessly browse approved travel cards sliced cleanly into performant pages, ensuring rapid image and rendering response times.
 - **Search bar**: Built with a debounced, reactive input stream allowing regular users to look up and filter active internal records by Country name dynamically.
-- **"Want to Visit" Wishlist**: Standard users can bookmark specific cards with an interactive bookmark toggle, updating relational database map links instantly.
+- **Wishlist**: Standard users can bookmark specific cards with an interactive bookmark toggle, updating relational database map links instantly.
 
 ---
 
@@ -209,7 +209,7 @@ Install dependencies and launch the live development interface:
 - **Reactive Debounced Search Execution**
 ![Search Execution Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/Searching.png)
 - **Wishlist Toggle Interactions**
-![VisitList Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/WantToVisitList.png)
+![wishlist Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/WantToVisitList.png)
 
 ---
 
