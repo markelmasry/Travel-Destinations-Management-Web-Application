@@ -4,7 +4,7 @@
 
 This project is a fully-functional full-stack application developed using **Spring Boot 3+**, **Java 17**, **Hibernate**, **MySQL**, and **Angular 16+**. Developed as the technical selection task for the Associate Software Engineer position, the application implements the required travel domain architecture. 
 
-The application enables regular users to securely browse curated global destinations, perform live reactive searches, view comprehensive geographic/monetary metadata, and manage a custom "Want to Visit" wishlist. Concurrently, it grants administrative access to an Admin Dashboard where recruiters or admins can live-fetch external recommendations from a third-party countries API, review them, and perform individual or transactional transactional bulk-saves into the local relational database.
+The application enables regular users to securely browse curated global destinations, perform live reactive searches, view comprehensive geographic/monetary metadata, and manage a custom "WishList". Concurrently, it grants administrative access to an Admin Dashboard where recruiters or admins can live-fetch external recommendations from a third-party countries API, review them, and perform individual or transactional transactional bulk-saves into the local relational database.
 
 ---
 
@@ -14,7 +14,7 @@ The application enables regular users to securely browse curated global destinat
 - **Admin Dashboard**: Admins can view all internally approved configurations, pull real-time live country data suggestions directly from the external REST Countries API, execute clean single inserts, run transactional batch bulk-inserts, or cleanly remove destinations from the local persistent storage layer.
 - **Pagination for the Destinations List**: Regular users can effortlessly browse approved travel cards sliced cleanly into performant pages, ensuring rapid image and rendering response times.
 - **Search bar**: Built with a debounced, reactive input stream allowing regular users to look up and filter active internal records by Country name dynamically.
-- **"Want to Visit" Wishlist**: Standard users can bookmark specific cards with an interactive bookmark toggle, updating relational database map links instantly.
+- **Wishlist**: Standard users can bookmark specific cards with an interactive bookmark toggle, updating relational database map links instantly.
 
 ---
 
@@ -22,7 +22,7 @@ The application enables regular users to securely browse curated global destinat
 
 ### Database Design
 
-  The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `WantVisit` relational mappings).
+  The following diagram represents the Entity-Relationship Diagram (ERD) mapping the system schema entities (`User`, `Destination`, and `Wishlist` relational mappings).
 
 ![ERD Diagram](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/ERD.png)
 
@@ -153,7 +153,7 @@ Install dependencies and launch the live development interface:
 <details>
 <summary>Auth Controller</summary>
 
-### 1. `POST /api/v1/auth/login`
+### 1. `POST /api/auth/login`
 - **Description**: Validates user credentials, roles, and provides an active stateless JWT authorization token.
 
 </details>
@@ -161,33 +161,33 @@ Install dependencies and launch the live development interface:
 <details>
 <summary>Destination Controller</summary>
 
-### 1. `GET /api/v1/admin/destinations/search`
+### 1. `GET /api/destinations/search`
 - **Description**: Returns server-side paginated local database records matching optional country queries.
 
-### 2. `GET /api/v1/admin/destinations/suggestions`
+### 2. `GET /api/destinations/suggestions`
 - **Description**: Reaches out to the external third-party travel API to fetch recommended data profiles based on a country keyword.
 
-### 3. `POST /api/v1/admin/destinations`
+### 3. `POST /api/destinations`
 - **Description**: Persists a single verified travel destination record configuration to the relational database.
 
-### 4. `POST /api/v1/admin/destinations/bulk`
+### 4. `POST /api/destinations/bulk`
 - **Description**: Executes a transactional batch insert to persist multiple suggestions concurrently (Bonus Feature).
 
-### 5. `DELETE /api/v1/admin/destinations/{id}`
+### 5. `DELETE /api/destinations/{id}`
 - **Description**: Permanently removes an approved destination configuration profile out of the database via its numerical unique ID.
 
 </details>
 
 <details>
-<summary>WantVisit Controller</summary>
+<summary>Wishlist Controller</summary>
 
-### 1. `GET /api/v1/user/visit-list/{userId}`
-- **Description**: Retrieves all saved wishlist items currently bookmarked by a specific user profile tracking ID.
+### 1. `GET /api/wishlist/user/{username}`
+- **Description**: Retrieves all saved wishlist items currently bookmarked by a specific user profile.
 
-### 2. `POST /api/v1/user/visit-list`
+### 2. `POST /api/wishlist`
 - **Description**: Saves a relational tracking bookmark linking a user profile directly to an approved destination ID.
 
-### 3. `DELETE /api/v1/user/visit-list/{visitId}/user/{userId}`
+### 3. `DELETE /api/wishlist/{visitId}/user/{username}`
 - **Description**: Removes an existing bookmarked tracking instance safely out of a user's personal tracking list.
 
 </details>
@@ -209,7 +209,7 @@ Install dependencies and launch the live development interface:
 - **Reactive Debounced Search Execution**
 ![Search Execution Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/Searching.png)
 - **Wishlist Toggle Interactions**
-![VisitList Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/WantToVisitList.png)
+![wishlist Layout](https://github.com/markelmasry/Travel-Destinations-Management-Web-Application/blob/main/Images/WantToVisitList.png)
 
 ---
 
